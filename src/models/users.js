@@ -10,9 +10,11 @@ export default (sequelize) => {
         primaryKey: true,
       },
       name: { type: DataTypes.STRING, allowNull: false },
+      email: { type: DataTypes.STRING, allowNull: false, unique: true },
+      password_hash: { type: DataTypes.STRING, allowNull: false },
       description: { type: DataTypes.TEXT },
       role: {
-        type: DataTypes.ENUM("admin", "member"),
+        type: DataTypes.ENUM("CUSTOMER", "ADMIN"),
         allowNull: false,
       },
     },
