@@ -36,7 +36,7 @@ export default (sequelize) => {
                 allowNull: false,
             },
             status: {
-                type: DataTypes.ENUM("PENDING", "PROCESSING", "SUCCESS", "FAILED"),
+                type: DataTypes.ENUM("PENDING", "PUBLISHED", "SUCCESS", "FAILED"),
                 allowNull: false,
             },
             attempts: {
