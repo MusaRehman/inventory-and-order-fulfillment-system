@@ -1,5 +1,10 @@
+import { Router } from "express";
+import {
+  createOrder,
+} from "../controllers/orders.js";
 
+let router = Router();
 
+router.post("/create", createOrder);
 
-// export const createOrder = (req, res) => {
-//     const { userId, items } = req.body;
+export default router;
