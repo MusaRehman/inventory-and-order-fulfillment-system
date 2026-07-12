@@ -147,10 +147,14 @@
 import crypto from "crypto";
 import { db } from "../models/index.js";
 import { sequelize } from "../config/database.js";
-import OrderItems from "../models/orderItems.js";
-import InventoryMovements from "../models/inventoryMovements.js";
+import { getRabbitChannel } from "../config/rabbitmq.js";
 
-const { Order, Product } = db;
+const { 
+  Order, 
+  Product,
+  OrderItem: OrderItems,
+  InventoryMovement: InventoryMovements
+} = db;
 
 export const createOrder = async (req, res) => {
   const payload = req.body;
@@ -327,6 +331,17 @@ export const createOrder = async (req, res) => {
       }
 
     });
+
+    const channel = getRabbitChannel();
+
+    // will offload on payment consumer here
+    channel.publish(
+    "app.exchange",
+    "payment.process",
+    Buffer.from(JSON.stringify(payload)),
+    { persistent: true, contentType: "application/json" }
+  );
+    
 
     return res.status(201).json({
       message: "Order created successfully",
